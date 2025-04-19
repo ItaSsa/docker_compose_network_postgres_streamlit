@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import psycopg2
 import matplotlib.pyplot as plt
-from init_db import init_db  # 👈 import the setup function
+from init_db import init_db 
 
 # Run DB setup once
 init_db()
@@ -10,8 +10,8 @@ init_db()
 DB_NAME = "churn_db"
 DB_USER = "postgres"
 DB_PASS = "Postgres2019!"
-DB_HOST = "localhost"
-DB_PORT = "15432"
+DB_HOST = "db"
+DB_PORT = "5432"
 TABLE_NAME = "customer_churn"
 
 @st.cache_data
@@ -33,6 +33,11 @@ st.subheader("Churn Distribution")
 churn_counts = df["Churn"].value_counts()
 st.bar_chart(churn_counts)
 
+# Clean your data first
+df["MonthlyCharges"] = pd.to_numeric(df["MonthlyCharges"], errors="coerce")
+df["Tenure"] = pd.to_numeric(df["Tenure"], errors="coerce")
+
+# Monthly Charges Boxplot
 st.subheader("Monthly Charges by Churn")
 fig, ax = plt.subplots()
 df.boxplot(column="MonthlyCharges", by="Churn", ax=ax)
@@ -40,5 +45,7 @@ plt.title("Monthly Charges by Churn")
 plt.suptitle("")
 st.pyplot(fig)
 
+# Average Tenure by Gender
 st.subheader("Average Tenure by Gender")
-st.bar_chart(df.groupby("Gender")["Tenure"].apply(pd.to_numeric, errors='coerce').mean())
+avg_tenure = df.groupby("Gender")["Tenure"].mean()
+st.bar_chart(avg_tenure)

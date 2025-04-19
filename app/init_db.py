@@ -6,8 +6,8 @@ def init_db():
     DB_NAME = "churn_db"
     DB_USER = "postgres"
     DB_PASS = "Postgres2019!"
-    DB_HOST = "localhost"
-    DB_PORT = "15432"
+    DB_HOST = "db"
+    DB_PORT = "5432"
     CSV_PATH = "data/customer_churn_sample.csv"
     TABLE_NAME = "customer_churn"
 
