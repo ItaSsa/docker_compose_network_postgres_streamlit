@@ -30,12 +30,12 @@ and the Postegres database is in another container in a Docker network.
 1. **Build the Docker image:**
 
 ```bash
-docker build -t docker_image_streamlit .
+docker compose build app --no-cache
 ```
 
 2. **Build the Docker image:**
 ```bash
-docker run -d -p 8501:8501 docker_image_stream docker_image_stream
+docker compose up
 ```
 
 ## Author
