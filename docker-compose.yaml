@@ -1,5 +1,5 @@
 services:
-  teste-postgres-compose:
+  db:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "Postgres2019!"
@@ -10,7 +10,7 @@ services:
     networks:
       - postgres-compose-network
       
-  teste-pgadmin-compose:
+  pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "itairaest@gmail.com"
@@ -18,10 +18,20 @@ services:
     ports:
       - "16543:80"
     depends_on:
-      - teste-postgres-compose
+      - db
+    networks:
+      - postgres-compose-network
+  app:
+    build: .
+    ports: 
+      - "8501:8501"  # Correct: Host port 8501 maps to container port 8501
+    environment:
+      DB_HOST: db
+    depends_on:
+      - db
     networks:
       - postgres-compose-network
 
 networks: 
   postgres-compose-network:
-    driver: bridge
+      driver: bridge
